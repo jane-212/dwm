@@ -30,7 +30,7 @@ static const unsigned int alphas[][3]      = {
 };
 
 /* tagging */
-static const char *tags[] = { "", "", "", "", "", "", "", "", "" };
+static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -49,9 +49,9 @@ static const int resizehints = 1;    /* 1 means respect size hints in tiled resi
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
-	{ "",      monocle },
-	{ "",      tile },    /* first entry is default */
-	{ "",      NULL },    /* no layout function means floating behavior */
+	{ "[M]",      monocle },
+	{ "[]=",      tile },    /* first entry is default */
+	{ "><>",      NULL },    /* no layout function means floating behavior */
 };
 
 /* key definitions */
@@ -70,12 +70,24 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "alacritty", NULL };
 static const char *edgecmd[]  = { "microsoft-edge-stable", NULL };
+static const char *lockcmd[]  = { "slock", NULL };
+static const char *volup[] = { "amixer", "-qM", "set", "Master", "2%+", "umute", NULL };
+static const char *voldown[] = { "amixer", "-qM", "set", "Master", "2%-", "umute", NULL };
+static const char *mute[] = { "amixer", "-qM", "set", "Master", "toggle", NULL };
+static const char *lightup[] = { "xbacklight", "-inc", "2", NULL };
+static const char *lightdown[] = { "xbacklight", "-dec", "2", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
+    { MODKEY|ShiftMask,             XK_Up,     spawn,          {.v = lightup} },
+    { MODKEY|ShiftMask,             XK_Down,   spawn,          {.v = lightdown} },
+    { MODKEY|ShiftMask,             XK_Right,  spawn,          {.v = volup} },
+    { MODKEY|ShiftMask,             XK_Left,   spawn,          {.v = voldown} },
+    { MODKEY|ShiftMask,             XK_m,      spawn,          {.v = mute} },
+	{ MODKEY|ShiftMask,             XK_l,      spawn,          {.v = lockcmd } },
 	{ MODKEY,                       XK_h,      spawn,          {.v = edgecmd } },
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
-	{ MODKEY          ,             XK_Return, spawn,          {.v = termcmd } },
+	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
